@@ -1,120 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ptv.zohar.rxjavademo.ApiDocActivity">
+    tools:context="ptv.zohar.rxjavademo.activities.ApiDocActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_create_operator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="gotoCreateOperator"
+        android:text="创建操作符"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_full_create"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="fullCreate"
-            android:text="基本创建"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_quick_create"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="quickCreate"
-            android:text="快速创建"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_full_create" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_other_create"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="otherCreate"
-            android:text="其他的创建方法"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_quick_create" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_delay_create"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="delayCreate"
-            android:text="延迟创建"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_other_create" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_dispose"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="dispose"
-            android:text="Disposable.dispose()"
-            android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_delay_create" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="timerCreate"
-            android:text="定时延迟发送事件"
-            android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_dispose" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_interval"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="interval"
-            android:text="指定每隔一段时间就发送一次时间"
-            android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_timer" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_interval_range"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="intervalRange"
-            android:text="指定每隔一段时间发送一次事件及总共发送的事件的数量"
-            android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_interval" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_range"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="range"
-            android:text="连续发送一个事件序列（range）"
-            android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_interval_range" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_range_long"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="rangeLong"
-            android:text="连续发送一个事件序列（rangeLong）"
-            android:textAllCaps="false"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_range" />
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_quick_create"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="gotoTransformOperator"
+        android:text="变换操作符"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_create_operator" />
+</android.support.constraint.ConstraintLayout>

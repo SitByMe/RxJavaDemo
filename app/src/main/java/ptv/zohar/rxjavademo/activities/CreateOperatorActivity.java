@@ -1,7 +1,7 @@
-package ptv.zohar.rxjavademo;
+package ptv.zohar.rxjavademo.activities;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
@@ -16,15 +16,16 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import ptv.zohar.rxjavademo.R;
 import ptv.zohar.rxjavademo.utils.ToastUtils;
 
-public class ApiDocActivity extends AppCompatActivity {
+public class CreateOperatorActivity extends AppCompatActivity {
     private String TAG = "ApiDocActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_api_doc);
+        setContentView(R.layout.activity_create_operator);
     }
 
     /**

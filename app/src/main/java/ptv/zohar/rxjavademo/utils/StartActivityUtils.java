@@ -1,4 +1,4 @@
-package ptv.zohar.rxjavademo;
+package ptv.zohar.rxjavademo.utils;
 
 import android.content.Context;
 import android.content.Intent;

@@ -4,35 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ptv.zohar.rxjavademo.activities.MainActivity">
+    tools:context="ptv.zohar.rxjavademo.activities.TransformOperatorActivity">
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_basic_use"
+        android:id="@+id/btn_buffer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="goToBasicUse"
-        android:text="基本使用"
+        android:onClick="bufferOperator"
+        android:text="buffer"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_api_doc"
+        android:id="@+id/btn_window"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="goToApiDoc"
-        android:text="API解释"
+        android:onClick="windowOperator"
+        android:text="window"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_basic_use" />
+        app:layout_constraintTop_toBottomOf="@id/btn_buffer" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_use_scenes"
+        android:id="@+id/btn_flat_map"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="goToUseScenes"
-        android:text="使用场景"
+        android:onClick="flatMapOperator"
+        android:text="flatMap"
+        android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_api_doc" />
+        app:layout_constraintTop_toBottomOf="@id/btn_window" />
 </android.support.constraint.ConstraintLayout>

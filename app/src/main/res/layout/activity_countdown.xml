@@ -4,24 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ptv.zohar.rxjavademo.activities.BasicUseActivity">
+    tools:context="ptv.zohar.rxjavademo.usedscenes.CountdownActivity">
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_step_use"
-        android:layout_width="0dp"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="stepCall"
-        android:text="方式一：分步骤实现"
+        android:text="点击按钮开始倒计时"
+        app:layout_constraintBottom_toTopOf="@id/btn_begin"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.AppCompatButton
-        android:layout_width="0dp"
+        android:id="@+id/btn_begin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="chainCall"
-        android:text="方式二：链式调用"
+        android:background="@drawable/bg_btn_selector"
+        android:onClick="beginCountDown"
+        android:text="开始"
+        android:textColor="@color/text_color_white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_step_use" />
+        app:layout_constraintTop_toBottomOf="@id/tv_time" />
 </android.support.constraint.ConstraintLayout>

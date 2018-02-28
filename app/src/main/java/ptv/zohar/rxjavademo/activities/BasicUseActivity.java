@@ -1,4 +1,4 @@
-package ptv.zohar.rxjavademo;
+package ptv.zohar.rxjavademo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import ptv.zohar.rxjavademo.R;
 
 public class BasicUseActivity extends AppCompatActivity {
 
