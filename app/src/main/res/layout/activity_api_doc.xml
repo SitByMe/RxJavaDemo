@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_quick_create"
+        android:id="@+id/btn_transform_operator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="gotoTransformOperator"
@@ -26,4 +26,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_create_operator" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_filter_operation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="gotoFilterOperation"
+        android:text="过滤操作符"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_transform_operator" />
 </android.support.constraint.ConstraintLayout>

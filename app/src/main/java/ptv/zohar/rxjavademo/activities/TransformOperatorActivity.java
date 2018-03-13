@@ -1,7 +1,5 @@
 package ptv.zohar.rxjavademo.activities;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
@@ -16,23 +14,59 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
-import ptv.zohar.rxjavademo.R;
+import ptv.zohar.rxjavademo.adapter.RvListAdapter;
+import ptv.zohar.rxjavademo.enums.TransformOperator;
 
-public class TransformOperatorActivity extends AppCompatActivity {
+public class TransformOperatorActivity extends AppCompatListActivity {
     private String TAG = "TransformOperatorActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transform_operator);
+    public List<String> getDataList() {
+        return TransformOperator.getNames();
+    }
+
+    @Override
+    public RvListAdapter.OnItemClickListener getOnItemClickListener(final List<String> dataList) {
+        return new RvListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                switch (TransformOperator.valueOf(dataList.get(position))) {
+                    case buffer:
+                        bufferOperator();
+                        break;
+                    case window:
+                        windowOperator();
+                        break;
+                    case flatMap:
+                        flatMapOperator();
+                        break;
+                    case concatMap:
+                        concatMapOperator();
+                        break;
+                    case flatMapIterable:
+                        flatMapIterableOperator();
+                        break;
+                    case groupBy:
+                        groupByOperator();
+                        break;
+                    case map:
+                        mapOperator();
+                        break;
+                    case cast:
+                        castOperator();
+                        break;
+                    case scan:
+                        scanOperator();
+                        break;
+                }
+            }
+        };
     }
 
     /**
      * buffer
-     *
-     * @param view view
      */
-    public void bufferOperator(View view) {
+    private void bufferOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .buffer(3, 1)
                 .subscribe(new Observer<List<Integer>>() {
@@ -60,10 +94,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * window
-     *
-     * @param view view
      */
-    public void windowOperator(View view) {
+    private void windowOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .window(3, 1)
                 .subscribe(new Consumer<Observable<Integer>>() {
@@ -96,10 +128,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * flatMap
-     *
-     * @param view view
      */
-    public void flatMapOperator(View view) {
+    private void flatMapOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .flatMap(new Function<Integer, ObservableSource<String>>() {
                     @Override
@@ -142,10 +172,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * concatMap
-     *
-     * @param view view
      */
-    public void concatMapOperator(View view) {
+    private void concatMapOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .concatMap(new Function<Integer, ObservableSource<String>>() {
                     @Override
@@ -182,10 +210,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * flatMapIterable
-     *
-     * @param view view
      */
-    public void flatMapIterableOperator(View view) {
+    private void flatMapIterableOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .flatMapIterable(new Function<Integer, Iterable<String>>() {
                     @Override
@@ -222,10 +248,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * groupBy
-     *
-     * @param view view
      */
-    public void groupByOperator(View view) {
+    private void groupByOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .groupBy(new Function<Integer, String>() {
                     @Override
@@ -279,10 +303,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * map
-     *
-     * @param view view
      */
-    public void mapOperator(View view) {
+    private void mapOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .map(new Function<Integer, String>() {
                     @Override
@@ -315,10 +337,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * cast
-     *
-     * @param view view
      */
-    public void castOperator(View view) {
+    private void castOperator() {
         Observable.just(1, "2", 3.0, "4", 5)
                 .cast(Integer.class)//将不同的事件类型转换为Integer类型
                 .subscribe(new Observer<Integer>() {
@@ -346,10 +366,8 @@ public class TransformOperatorActivity extends AppCompatActivity {
 
     /**
      * scan
-     *
-     * @param view view
      */
-    public void scanOperator(View view) {
+    private void scanOperator() {
         Observable.just(1, 2, 3, 4, 5)
                 .scan(new BiFunction<Integer, Integer, Integer>() {
                     @Override

@@ -35,4 +35,8 @@ public class ApiDocActivity extends AppCompatActivity {
     public void gotoTransformOperator(View view) {
         StartActivityUtils.startActivity(this, TransformOperatorActivity.class);
     }
+
+    public void gotoFilterOperation(View view) {
+        StartActivityUtils.startActivity(this, FilterOperationActivity.class);
+    }
 }
