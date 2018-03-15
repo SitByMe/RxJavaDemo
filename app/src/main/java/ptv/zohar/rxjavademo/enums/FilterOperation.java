@@ -8,7 +8,7 @@ import java.util.List;
  * desc:
  */
 public enum FilterOperation {
-    debounce, distinct, elementAt, filter, first, ignoreElements, last, sample, skip, skipLast, take, takeLast, ofType;
+    debounce, throttleWithTimeout, distinct, elementAt, filter, ofType, first, last, ignoreElements, throttleFirst, throttleLast_sample, skip_skipLast, take, takeLast;
 
     public static List<String> getNames() {
         List<String> nameList = new ArrayList<>();

@@ -6,6 +6,7 @@
 
     <!-- base colors -->
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
     <!-- text colors-->
     <color name="text_color_white">@color/white</color>
