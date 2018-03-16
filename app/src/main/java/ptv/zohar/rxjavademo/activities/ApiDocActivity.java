@@ -17,6 +17,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ptv.zohar.rxjavademo.R;
+import ptv.zohar.rxjavademo.enums.CombinationOperation;
 import ptv.zohar.rxjavademo.utils.StartActivityUtils;
 import ptv.zohar.rxjavademo.utils.ToastUtils;
 
@@ -38,5 +39,9 @@ public class ApiDocActivity extends AppCompatActivity {
 
     public void gotoFilterOperation(View view) {
         StartActivityUtils.startActivity(this, FilterOperationActivity.class);
+    }
+
+    public void gotoCombinationOperation(View view) {
+        StartActivityUtils.startActivity(this, CombinationOperationActivity.class);
     }
 }

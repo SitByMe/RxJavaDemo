@@ -1,8 +1,6 @@
 package ptv.zohar.rxjavademo.activities;
 
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
