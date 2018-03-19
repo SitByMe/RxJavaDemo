@@ -7,14 +7,18 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import ptv.zohar.rxjavademo.adapter.RvListAdapter;
 import ptv.zohar.rxjavademo.enums.CombinationOperation;
+import ptv.zohar.rxjavademo.utils.SnackbarUtils;
 
 /**
  * Created by Zohar on 2018/3/15.
@@ -37,23 +41,27 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                     case concat_concatArray:
                         concatAndConcatArrayOperation();
                         break;
-                    case combineLatest:
-                        combineLatestOperation();
-                        break;
-                    case join:
-//                        joinOperation();
-                        break;
                     case merge_mergeArray:
                         mergeAndMergeArrayOperation();
                         break;
-                    case startWith:
-                        startWithOperation();
+                    case concatArrayDelayError_mergeArrayDelayError:
+                        concatArrayDelayErrorAndMergeArrayDelayErrorOperation();
                         break;
-                    case SWITCH:
-                        switchOperation();
+                    case combineLatest:
+                        combineLatestOperation();
                         break;
                     case zip:
                         zipOperation();
+                        break;
+                    case join:
+//                        joinOperation();
+                        SnackbarUtils.showShortSnackbar(recyclerView, "还未完全理解");
+                        break;
+                    case startWith_startWithArray:
+                        startWithAndStartWithArrayOperation();
+                        break;
+                    case SWITCH:
+                        switchOperation();
                         break;
                 }
             }
@@ -92,136 +100,6 @@ public class CombinationOperationActivity extends AppCompatListActivity {
     }
 
     /**
-     * combineLatest
-     */
-
-    Disposable disposable;
-
-    private void combineLatestOperation() {
-        final List<String> strList = new ArrayList<>();
-        strList.add("O");
-        strList.add("A");
-        strList.add("B");
-        strList.add("C");
-        strList.add("D");
-        final Observer observer = new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposable = d;
-                Log.i(TAG, "开始采用subscribe连接");
-            }
-
-            @Override
-            public void onNext(String s) {
-                Log.i(TAG, "Next：" + s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.i(TAG, "对Error事件作出响应：" + e.toString());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "对Complete事件作出响应");
-            }
-        };
-        Observable.combineLatest(
-                Observable.interval(2, TimeUnit.SECONDS).map(new Function<Long, String>() {
-                    @Override
-                    public String apply(Long aLong) throws Exception {
-                        if (aLong >= strList.size()) {
-                            disposable.dispose();
-                            observer.onComplete();
-                        }
-                        Log.i(TAG, "字母：" + strList.get(aLong.intValue()));
-                        return strList.get(aLong.intValue());
-                    }
-                }),
-                Observable.interval(1200, TimeUnit.MILLISECONDS).map(new Function<Long, Integer>() {
-                    @Override
-                    public Integer apply(Long aLong) throws Exception {
-                        Log.i(TAG, "数字：" + aLong.intValue());
-                        return aLong.intValue();
-                    }
-                }),
-                new BiFunction<String, Integer, String>() {
-
-                    @Override
-                    public String apply(String s, Integer integer) throws Exception {
-                        return integer + s;
-                    }
-                }).subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.newThread())
-                .subscribe(observer);
-    }
-
-    final List<String> strList = new ArrayList<>();
-
-    /**
-     * join
-     */
-    private void joinOperation() {
-        strList.add("A");
-        strList.add("B");
-        strList.add("C");
-
-        //用来每秒从strList中取出数据并发送出去
-        Observable<String> houseSequence =
-                Observable.interval(1, TimeUnit.SECONDS)
-                        .map(new Function<Long, String>() {
-                            @Override
-                            public String apply(Long aLong) throws Exception {
-                                return strList.get(aLong.intValue());
-                            }
-                        }).take(strList.size());//这里的take是为了防止strList.get(position.intValue())数组越界
-
-        //用来实现每秒发送一个新的Long型数据
-        Observable<Long> tictoc = Observable.interval(1, TimeUnit.SECONDS);
-
-        houseSequence.join(tictoc,
-                new Function<String, ObservableSource<Long>>() {
-                    @Override
-                    public ObservableSource<Long> apply(String s) throws Exception {
-                        return Observable.timer(1, TimeUnit.SECONDS);
-                    }
-                },
-                new Function<Long, ObservableSource<Long>>() {
-                    @Override
-                    public ObservableSource<Long> apply(Long aLong) throws Exception {
-                        return Observable.timer(1, TimeUnit.SECONDS);
-                    }
-                },
-                new BiFunction<String, Long, Object>() {
-                    @Override
-                    public Object apply(String s, Long aLong) throws Exception {
-                        return aLong + "-->" + strList.get(aLong.intValue());
-                    }
-                }
-        ).subscribe(new Observer<Object>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.i(TAG, "开始采用subscribe连接");
-            }
-
-            @Override
-            public void onNext(Object s) {
-                Log.i(TAG, "Next：" + s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.i(TAG, "对Error事件作出响应");
-            }
-
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "对Complete事件作出响应");
-            }
-        });
-    }
-
-    /**
      * merge
      */
     private void mergeAndMergeArrayOperation() {
@@ -250,11 +128,298 @@ public class CombinationOperationActivity extends AppCompatListActivity {
     }
 
     /**
-     * startWith
+     * concatDelayError/mergeDelayError
      */
-    private void startWithOperation() {
+    private void concatArrayDelayErrorAndMergeArrayDelayErrorOperation() {
+        Observable.concatArrayDelayError(
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                        e.onNext(1);
+                        e.onNext(2);
+                        e.onError(new NullPointerException());
+                        e.onNext(3);
+                    }
+                }), Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                        e.onNext(4);
+                        e.onNext(5);
+                        e.onError(new IllegalAccessException());
+                        e.onNext(6);
+                    }
+                }))
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.i(TAG, "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(Integer aLong) {
+                        Log.i(TAG, "Next：" + aLong);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "对Error事件作出响应：" + e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "对Complete事件作出响应");
+                    }
+                });
+    }
+
+    /**
+     * combineLatest
+     */
+    private void combineLatestOperation() {
+        Observable.combineLatest(
+                Observable.create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<String> e) throws Exception {
+                        Thread.sleep(3000);
+                        Log.i(TAG, "字母：0");
+                        e.onNext("0");
+
+                        Thread.sleep(1000);
+                        Log.i(TAG, "字母：A");
+                        e.onNext("A");
+
+                        Thread.sleep(2000);
+                        Log.i(TAG, "字母：B");
+                        e.onNext("B");
+
+                        Thread.sleep(500);
+                        Log.i(TAG, "字母：C");
+                        e.onNext("C");
+
+                        Thread.sleep(1400);
+                        Log.i(TAG, "字母：D");
+                        e.onNext("D");
+
+                        Log.i(TAG, "字母onComplete()");
+                        e.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                        Thread.sleep(1200);
+                        Log.i(TAG, "数字：0");
+                        e.onNext(0);
+
+                        Thread.sleep(1200);
+                        Log.i(TAG, "数字：1");
+                        e.onNext(1);
+
+                        Thread.sleep(1200);
+                        Log.i(TAG, "数字：2");
+                        e.onNext(2);
+
+                        Thread.sleep(1200);
+                        Log.i(TAG, "数字：3");
+                        e.onNext(3);
+
+                        Thread.sleep(1200);
+                        Log.i(TAG, "数字：4");
+                        e.onNext(4);
+
+                        Log.i(TAG, "数字onComplete()");
+                        e.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                new BiFunction<String, Integer, String>() {
+
+                    @Override
+                    public String apply(String s, Integer integer) throws Exception {
+                        return integer + s;
+                    }
+                })
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.i(TAG, "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        Log.i(TAG, "Next：" + s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "对Error事件作出响应：" + e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "对Complete事件作出响应");
+                    }
+                });
+    }
+
+    List<String> houses = new ArrayList<>();//模拟的房源数据，用于测试
+
+    /**
+     * join
+     */
+    private void joinOperation() {
+        houses.add("A");
+        houses.add("B");
+        houses.add("C");
+        houses.add("D");
+        houses.add("E");
+
+        Observable<String> houseSequence =
+                Observable.interval(1, TimeUnit.SECONDS)
+                        .map(new Function<Long, String>() {
+                            @Override
+                            public String apply(Long aLong) throws Exception {
+                                return houses.get(aLong.intValue());
+                            }
+                        }).take(houses.size());
+
+        Observable<Long> tictoc = Observable.interval(1, TimeUnit.SECONDS);
+
+        houseSequence.join(tictoc,
+                new Function<String, ObservableSource<Long>>() {
+                    @Override
+                    public ObservableSource<Long> apply(String s) throws Exception {
+                        return Observable.timer(2, TimeUnit.SECONDS);
+                    }
+                },
+                new Function<Long, ObservableSource<Long>>() {
+                    @Override
+                    public ObservableSource<Long> apply(Long aLong) throws Exception {
+                        return Observable.timer(0, TimeUnit.SECONDS);
+                    }
+                },
+                new BiFunction<String, Long, String>() {
+                    @Override
+                    public String apply(String s, Long aLong) throws Exception {
+                        return aLong + "-->" + s;
+                    }
+                }
+        ).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.i(TAG, "开始采用subscribe连接");
+            }
+
+            @Override
+            public void onNext(String aLong) {
+                Log.i(TAG, "Next：" + aLong);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i(TAG, "对Error事件作出响应");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "对Complete事件作出响应");
+            }
+        });
+    }
+
+    /**
+     * zipOperation
+     */
+    private void zipOperation() {
+        Observable.zip(Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                        Log.i(TAG, "1");
+                        emitter.onNext(1);//0
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "2");
+                        emitter.onNext(2);//1
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "3");
+                        emitter.onNext(3);//2
+                        Thread.sleep(2000);
+
+                        Log.i(TAG, "4");
+                        emitter.onNext(4);//4
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "5");
+                        emitter.onNext(5);//5
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "数字onComplete()");
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                Observable.create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                        Thread.sleep(500);
+                        Log.i(TAG, "A");
+                        emitter.onNext("A");//0.5
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "B");
+                        emitter.onNext("B");//1.5
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "C");
+                        emitter.onNext("C");//2.5;
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "D");
+                        emitter.onNext("D");//3.5
+                        Thread.sleep(4000);
+
+                        Log.i(TAG, "E");
+                        emitter.onNext("E");//7.5
+                        Thread.sleep(1000);
+
+                        Log.i(TAG, "字母onComplete()");
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                new BiFunction<Integer, String, String>() {
+                    @Override
+                    public String apply(Integer integer, String s) throws Exception {
+                        return integer + s;
+                    }
+                }).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.i(TAG, "开始采用subscribe连接");
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.i(TAG, "Next：" + s);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i(TAG, "对Error事件作出响应");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "对Complete事件作出响应");
+            }
+        });
+    }
+
+    /**
+     * startWith_startWithArray
+     */
+    private void startWithAndStartWithArrayOperation() {
         Observable.just(1, 2, 3)
                 .startWith(Observable.just(4, 5, 6))
+                .startWithArray(7, 8, 9)
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -282,7 +447,7 @@ public class CombinationOperationActivity extends AppCompatListActivity {
      * switch
      */
     private void switchOperation() {
-       /* Observable observable = Observable.timer(1, TimeUnit.SECONDS)
+/*        Observable observable = Observable.timer(1, TimeUnit.SECONDS)
                 .map(new Function<Long, Observable<Long>>() {
                     @Override
                     public Observable<Long> apply(Long aLong) throws Exception {
@@ -317,12 +482,5 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                         Log.i(TAG, "对Complete事件作出响应");
                     }
                 });*/
-    }
-
-    /**
-     * zipOperation
-     */
-    private void zipOperation() {
-
     }
 }

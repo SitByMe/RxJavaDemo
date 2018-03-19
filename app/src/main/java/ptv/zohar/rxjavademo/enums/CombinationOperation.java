@@ -8,7 +8,8 @@ import java.util.List;
  * desc:
  */
 public enum CombinationOperation {
-    concat_concatArray, combineLatest, join, merge_mergeArray, startWith, SWITCH, zip;
+    concat_concatArray, merge_mergeArray, concatArrayDelayError_mergeArrayDelayError, combineLatest,
+    zip, join, startWith_startWithArray, SWITCH;
 
     public static List<String> getNames() {
         List<String> nameList = new ArrayList<>();

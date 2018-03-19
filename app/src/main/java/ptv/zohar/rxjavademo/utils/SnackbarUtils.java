@@ -1,5 +1,6 @@
 package ptv.zohar.rxjavademo.utils;
 
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +23,17 @@ public class SnackbarUtils {
     }
 
     private static WeakReference<Snackbar> snackbarWeakReference;
+
+    /**
+     * 显示短时snackbar
+     *
+     * @param parent 父视图(CoordinatorLayout或者DecorView)
+     * @param text   文本
+     */
+    public static void showShortSnackbar(View parent, CharSequence text) {
+        showSnackbar(parent, text, Snackbar.LENGTH_SHORT, Color.WHITE, Color.BLACK, null, -1, null);
+    }
+
 
     /**
      * 显示短时snackbar
