@@ -46,4 +46,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_filter_operation" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_error_operation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="gotoErrorOperation"
+        android:text="错误处理操作符"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_combination_operation" />
 </android.support.constraint.ConstraintLayout>

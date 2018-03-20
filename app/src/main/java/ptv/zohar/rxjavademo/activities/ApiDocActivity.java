@@ -44,4 +44,8 @@ public class ApiDocActivity extends AppCompatActivity {
     public void gotoCombinationOperation(View view) {
         StartActivityUtils.startActivity(this, CombinationOperationActivity.class);
     }
+
+    public void gotoErrorOperation(View view) {
+        StartActivityUtils.startActivity(this, ErrorOperationActivity.class);
+    }
 }

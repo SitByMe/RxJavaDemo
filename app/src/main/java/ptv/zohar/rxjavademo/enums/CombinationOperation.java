@@ -9,7 +9,7 @@ import java.util.List;
  */
 public enum CombinationOperation {
     concat_concatArray, merge_mergeArray, concatArrayDelayError_mergeArrayDelayError, combineLatest,
-    zip, join, startWith_startWithArray, SWITCH;
+    zip, startWith_startWithArray, join, SWITCH;
 
     public static List<String> getNames() {
         List<String> nameList = new ArrayList<>();

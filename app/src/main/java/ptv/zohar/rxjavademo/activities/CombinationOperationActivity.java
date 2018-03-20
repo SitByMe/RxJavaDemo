@@ -22,7 +22,7 @@ import ptv.zohar.rxjavademo.utils.SnackbarUtils;
 
 /**
  * Created by Zohar on 2018/3/15.
- * desc:
+ * desc:组合操作符
  */
 public class CombinationOperationActivity extends AppCompatListActivity {
     private String TAG = "CombinationOperationActivity";
@@ -53,15 +53,16 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                     case zip:
                         zipOperation();
                         break;
+                    case startWith_startWithArray:
+                        startWithAndStartWithArrayOperation();
+                        break;
                     case join:
 //                        joinOperation();
                         SnackbarUtils.showShortSnackbar(recyclerView, "还未完全理解");
                         break;
-                    case startWith_startWithArray:
-                        startWithAndStartWithArrayOperation();
-                        break;
                     case SWITCH:
-                        switchOperation();
+                        SnackbarUtils.showShortSnackbar(recyclerView, "还未完全理解");
+//                        switchOperation();
                         break;
                 }
             }
@@ -72,10 +73,8 @@ public class CombinationOperationActivity extends AppCompatListActivity {
      * and/then/when
      */
     private void concatAndConcatArrayOperation() {
-        Observable.concat(Observable.just(1, 2, 3),
-                Observable.just(4, 5, 6),
-                Observable.just(7, 8, 9),
-                Observable.just(10, 11, 12))
+        Observable.concat(Observable.just(1, 1, 1),
+                Observable.just(2, 2))
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -83,8 +82,8 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                     }
 
                     @Override
-                    public void onNext(Integer aLong) {
-                        Log.i(TAG, "Next：" + aLong);
+                    public void onNext(Integer integer) {
+                        Log.i(TAG, "Next：" + integer);
                     }
 
                     @Override
@@ -103,7 +102,39 @@ public class CombinationOperationActivity extends AppCompatListActivity {
      * merge
      */
     private void mergeAndMergeArrayOperation() {
-        Observable.merge(Observable.just(1, 2, 3), Observable.just(4, 5, 6))
+        Observable.merge(Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                        Thread.sleep(1000);
+                        e.onNext(20);
+
+                        Thread.sleep(1000);
+                        e.onNext(40);
+
+                        Thread.sleep(1000);
+                        e.onNext(60);
+
+                        Thread.sleep(1000);
+                        e.onNext(80);
+
+                        Thread.sleep(1000);
+                        e.onNext(100);
+
+                        e.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                        Thread.sleep(3500);
+                        e.onNext(1);
+
+                        Thread.sleep(2000);
+                        e.onNext(1);
+
+                        e.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()))
                 .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -111,8 +142,8 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                     }
 
                     @Override
-                    public void onNext(Integer aLong) {
-                        Log.i(TAG, "Next：" + aLong);
+                    public void onNext(Integer integer) {
+                        Log.i(TAG, "Next：" + integer);
                     }
 
                     @Override
@@ -177,26 +208,49 @@ public class CombinationOperationActivity extends AppCompatListActivity {
      */
     private void combineLatestOperation() {
         Observable.combineLatest(
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                        Thread.sleep(500);
+                        Log.i(TAG, "数字：1");
+                        e.onNext(1);
+
+                        Thread.sleep(1000);
+                        Log.i(TAG, "数字：2");
+                        e.onNext(2);
+
+                        Thread.sleep(2000);
+                        Log.i(TAG, "数字：3");
+                        e.onNext(3);
+
+                        Thread.sleep(500);
+                        Log.i(TAG, "数字：4");
+                        e.onNext(4);
+
+                        Thread.sleep(1000);
+                        Log.i(TAG, "数字：5");
+                        e.onNext(5);
+
+                        Log.i(TAG, "数字onComplete()");
+                        e.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
                 Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(ObservableEmitter<String> e) throws Exception {
-                        Thread.sleep(3000);
-                        Log.i(TAG, "字母：0");
-                        e.onNext("0");
-
                         Thread.sleep(1000);
                         Log.i(TAG, "字母：A");
                         e.onNext("A");
 
-                        Thread.sleep(2000);
+                        Thread.sleep(800);
                         Log.i(TAG, "字母：B");
                         e.onNext("B");
 
-                        Thread.sleep(500);
+                        Thread.sleep(1100);
                         Log.i(TAG, "字母：C");
                         e.onNext("C");
 
-                        Thread.sleep(1400);
+                        Thread.sleep(300);
                         Log.i(TAG, "字母：D");
                         e.onNext("D");
 
@@ -204,37 +258,9 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                         e.onComplete();
                     }
                 }).subscribeOn(Schedulers.io()),
-                Observable.create(new ObservableOnSubscribe<Integer>() {
+                new BiFunction<Integer, String, String>() {
                     @Override
-                    public void subscribe(ObservableEmitter<Integer> e) throws Exception {
-                        Thread.sleep(1200);
-                        Log.i(TAG, "数字：0");
-                        e.onNext(0);
-
-                        Thread.sleep(1200);
-                        Log.i(TAG, "数字：1");
-                        e.onNext(1);
-
-                        Thread.sleep(1200);
-                        Log.i(TAG, "数字：2");
-                        e.onNext(2);
-
-                        Thread.sleep(1200);
-                        Log.i(TAG, "数字：3");
-                        e.onNext(3);
-
-                        Thread.sleep(1200);
-                        Log.i(TAG, "数字：4");
-                        e.onNext(4);
-
-                        Log.i(TAG, "数字onComplete()");
-                        e.onComplete();
-                    }
-                }).subscribeOn(Schedulers.io()),
-                new BiFunction<String, Integer, String>() {
-
-                    @Override
-                    public String apply(String s, Integer integer) throws Exception {
+                    public String apply(Integer integer, String s) throws Exception {
                         return integer + s;
                     }
                 })
@@ -252,6 +278,118 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.i(TAG, "对Error事件作出响应：" + e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i(TAG, "对Complete事件作出响应");
+                    }
+                });
+    }
+
+    /**
+     * zipOperation
+     */
+    private void zipOperation() {
+        Observable.zip(Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                        Thread.sleep(500);
+                        Log.i(TAG, "数字：1");
+                        emitter.onNext(1);
+
+                        Thread.sleep(1000);
+                        Log.i(TAG, "数字：2");
+                        emitter.onNext(2);
+
+                        Thread.sleep(2000);
+                        Log.i(TAG, "数字：3");
+                        emitter.onNext(3);
+
+                        Thread.sleep(500);
+                        Log.i(TAG, "数字：4");
+                        emitter.onNext(4);
+
+                        Thread.sleep(1000);
+                        Log.i(TAG, "数字：5");
+                        emitter.onNext(5);
+
+                        Log.i(TAG, "数字onComplete()");
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                Observable.create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                        Thread.sleep(1000);
+                        Log.i(TAG, "字母：A");
+                        emitter.onNext("A");
+
+                        Thread.sleep(800);
+                        Log.i(TAG, "字母：B");
+                        emitter.onNext("B");
+
+                        Thread.sleep(1100);
+                        Log.i(TAG, "字母：C");
+                        emitter.onNext("C");
+
+                        Thread.sleep(300);
+                        Log.i(TAG, "字母：D");
+                        emitter.onNext("D");
+
+                        Log.i(TAG, "字母onComplete()");
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io()),
+                new BiFunction<Integer, String, String>() {
+                    @Override
+                    public String apply(Integer integer, String s) throws Exception {
+                        return integer + s;
+                    }
+                }).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.i(TAG, "开始采用subscribe连接");
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.i(TAG, "Next：" + s);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i(TAG, "对Error事件作出响应");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(TAG, "对Complete事件作出响应");
+            }
+        });
+    }
+
+    /**
+     * startWith_startWithArray
+     */
+    private void startWithAndStartWithArrayOperation() {
+        Observable.just(2, 3)
+                .startWith(Observable.just(1))
+                .startWithArray(4, 5, 6)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.i(TAG, "开始采用subscribe连接");
+                    }
+
+                    @Override
+                    public void onNext(Integer aLong) {
+                        Log.i(TAG, "Next：" + aLong);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "对Error事件作出响应");
                     }
 
                     @Override
@@ -324,123 +462,6 @@ public class CombinationOperationActivity extends AppCompatListActivity {
                 Log.i(TAG, "对Complete事件作出响应");
             }
         });
-    }
-
-    /**
-     * zipOperation
-     */
-    private void zipOperation() {
-        Observable.zip(Observable.create(new ObservableOnSubscribe<Integer>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-                        Log.i(TAG, "1");
-                        emitter.onNext(1);//0
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "2");
-                        emitter.onNext(2);//1
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "3");
-                        emitter.onNext(3);//2
-                        Thread.sleep(2000);
-
-                        Log.i(TAG, "4");
-                        emitter.onNext(4);//4
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "5");
-                        emitter.onNext(5);//5
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "数字onComplete()");
-                        emitter.onComplete();
-                    }
-                }).subscribeOn(Schedulers.io()),
-                Observable.create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                        Thread.sleep(500);
-                        Log.i(TAG, "A");
-                        emitter.onNext("A");//0.5
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "B");
-                        emitter.onNext("B");//1.5
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "C");
-                        emitter.onNext("C");//2.5;
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "D");
-                        emitter.onNext("D");//3.5
-                        Thread.sleep(4000);
-
-                        Log.i(TAG, "E");
-                        emitter.onNext("E");//7.5
-                        Thread.sleep(1000);
-
-                        Log.i(TAG, "字母onComplete()");
-                        emitter.onComplete();
-                    }
-                }).subscribeOn(Schedulers.io()),
-                new BiFunction<Integer, String, String>() {
-                    @Override
-                    public String apply(Integer integer, String s) throws Exception {
-                        return integer + s;
-                    }
-                }).subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.i(TAG, "开始采用subscribe连接");
-            }
-
-            @Override
-            public void onNext(String s) {
-                Log.i(TAG, "Next：" + s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.i(TAG, "对Error事件作出响应");
-            }
-
-            @Override
-            public void onComplete() {
-                Log.i(TAG, "对Complete事件作出响应");
-            }
-        });
-    }
-
-    /**
-     * startWith_startWithArray
-     */
-    private void startWithAndStartWithArrayOperation() {
-        Observable.just(1, 2, 3)
-                .startWith(Observable.just(4, 5, 6))
-                .startWithArray(7, 8, 9)
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.i(TAG, "开始采用subscribe连接");
-                    }
-
-                    @Override
-                    public void onNext(Integer aLong) {
-                        Log.i(TAG, "Next：" + aLong);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "对Error事件作出响应");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i(TAG, "对Complete事件作出响应");
-                    }
-                });
     }
 
     /**
