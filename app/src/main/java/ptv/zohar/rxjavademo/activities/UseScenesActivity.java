@@ -6,7 +6,7 @@ import android.view.View;
 
 import ptv.zohar.rxjavademo.R;
 import ptv.zohar.rxjavademo.utils.StartActivityUtils;
-import ptv.zohar.rxjavademo.usedscenes.CountdownActivity;
+import ptv.zohar.rxjavademo.activities.use.CountdownActivity;
 
 public class UseScenesActivity extends AppCompatActivity {
 

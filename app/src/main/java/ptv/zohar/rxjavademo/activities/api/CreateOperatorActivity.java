@@ -1,4 +1,4 @@
-package ptv.zohar.rxjavademo.activities;
+package ptv.zohar.rxjavademo.activities.api;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

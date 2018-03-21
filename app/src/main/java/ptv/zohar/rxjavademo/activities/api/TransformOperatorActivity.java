@@ -1,4 +1,4 @@
-package ptv.zohar.rxjavademo.activities;
+package ptv.zohar.rxjavademo.activities.api;
 
 import android.util.Log;
 import android.view.View;
@@ -14,6 +14,7 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
+import ptv.zohar.rxjavademo.activities.AppCompatListActivity;
 import ptv.zohar.rxjavademo.adapter.RvListAdapter;
 import ptv.zohar.rxjavademo.enums.TransformOperator;
 

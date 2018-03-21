@@ -1,4 +1,4 @@
-package ptv.zohar.rxjavademo.activities;
+package ptv.zohar.rxjavademo.activities.api;
 
 import android.util.Log;
 
@@ -16,6 +16,7 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import ptv.zohar.rxjavademo.activities.AppCompatListActivity;
 import ptv.zohar.rxjavademo.adapter.RvListAdapter;
 import ptv.zohar.rxjavademo.enums.CombinationOperation;
 import ptv.zohar.rxjavademo.utils.SnackbarUtils;

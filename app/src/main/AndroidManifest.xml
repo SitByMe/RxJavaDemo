@@ -18,13 +18,13 @@
         </activity>
         <activity android:name=".activities.BasicUseActivity" />
         <activity android:name=".activities.ApiDocActivity" />
-        <activity android:name=".usedscenes.CountdownActivity" />
+        <activity android:name=".activities.use.CountdownActivity" />
         <activity android:name=".activities.UseScenesActivity" />
-        <activity android:name=".activities.TransformOperatorActivity" />
-        <activity android:name=".activities.CreateOperatorActivity" />
-        <activity android:name=".activities.FilterOperationActivity" />
-        <activity android:name=".activities.CombinationOperationActivity" />
-        <activity android:name=".activities.ErrorOperationActivity" />
+        <activity android:name=".activities.api.TransformOperatorActivity" />
+        <activity android:name=".activities.api.CreateOperatorActivity" />
+        <activity android:name=".activities.api.FilterOperationActivity" />
+        <activity android:name=".activities.api.CombinationOperationActivity" />
+        <activity android:name=".activities.api.ErrorOperationActivity" />
     </application>
 
 </manifest>

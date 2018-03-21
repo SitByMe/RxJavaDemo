@@ -2,24 +2,15 @@ package ptv.zohar.rxjavademo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import ptv.zohar.rxjavademo.R;
-import ptv.zohar.rxjavademo.enums.CombinationOperation;
+import ptv.zohar.rxjavademo.activities.api.CombinationOperationActivity;
+import ptv.zohar.rxjavademo.activities.api.CreateOperatorActivity;
+import ptv.zohar.rxjavademo.activities.api.ErrorOperationActivity;
+import ptv.zohar.rxjavademo.activities.api.FilterOperationActivity;
+import ptv.zohar.rxjavademo.activities.api.TransformOperatorActivity;
 import ptv.zohar.rxjavademo.utils.StartActivityUtils;
-import ptv.zohar.rxjavademo.utils.ToastUtils;
 
 public class ApiDocActivity extends AppCompatActivity {
 
